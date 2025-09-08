@@ -1,6 +1,6 @@
 # market-wizard-api
 
-Backend for the [https://github.com/Lancasterg/market-wizard-frontend]("market-wizard" web application)[], which allows users to visualise their trading 212 investment portfolio. It uses the async `python-trading-212` library that I have also written. 
+Backend for the [market-wizard web application](https://github.com/Lancasterg/market-wizard-frontend), which allows users to visualise their trading 212 investment portfolio. It uses the async `python-trading-212` library that I have also written. 
 
 ---
 
