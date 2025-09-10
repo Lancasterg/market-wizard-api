@@ -1,9 +1,9 @@
 from aiocache import cached, SimpleMemoryCache
 
-from fastapi import APIRouter, HTTPException
+from fastapi import HTTPException
 
 import asyncio
-from t212.async_client import AsyncTrading212Client
+from t212 import AsyncTrading212Client
 from t212.models import PositionResponse, CashResponse
 from aiocache import cached, SimpleMemoryCache
 from market_wizard_api.models.portfolio.investments_summary import (
@@ -25,21 +25,21 @@ async def get_investments_summary() -> InvestmentsSummaryResponse:
 
     items = []
     for item in response.root:
-        total_invested = item.averagePrice * item.quantity
-        current_value = item.currentPrice * item.quantity
+        total_invested = item.average_price * item.quantity
+        current_value = item.current_price * item.quantity
         profit_loss_percentage = current_value / total_invested
         model = Investment(
             ticker=item.ticker,
             quantity=item.quantity,
-            average_price=item.averagePrice,
-            current_price=item.currentPrice,
+            average_price=item.average_price,
+            current_price=item.current_price,
             total_invested=total_invested,
             current_value=current_value,
             profit_loss=item.ppl,
             profit_loss_percentage=profit_loss_percentage - 1,
         )
         items.append(model)
-    
+
     return InvestmentsSummaryResponse(root=items)
 
 
@@ -66,8 +66,8 @@ async def get_portfolio_summary() -> PortfolioSummary:
         profit_loss_percentage = 0
         number_of_investments = 0
         for item in open_postitions_response.root:
-            total_invested += item.averagePrice * item.quantity
-            current_value += item.currentPrice * item.quantity
+            total_invested += item.average_price * item.quantity
+            current_value += item.current_price * item.quantity
             total_return += item.ppl
             number_of_investments += 1
             profit_loss_percentage = current_value / total_invested - 1
@@ -86,7 +86,6 @@ async def get_portfolio_summary() -> PortfolioSummary:
 
 async def order_history_summary():
     return await AsyncTrading212Client.historical_order_data(0, None, 20)
-
 
 
 if __name__ == "__main__":

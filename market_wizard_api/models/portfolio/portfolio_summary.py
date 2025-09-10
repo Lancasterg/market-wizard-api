@@ -9,7 +9,9 @@ class PortfolioSummary(BaseModel):
         ..., alias="totalInvested", description="Total amount invested in the portfolio"
     )
     current_invested_value: float = Field(
-        ..., alias="currentInvestedValue", description="Current market value of the portfolio"
+        ...,
+        alias="currentInvestedValue",
+        description="Current market value of the portfolio",
     )
     profit_loss_percentage: float = Field(
         ...,

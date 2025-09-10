@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from t212.async_client import AsyncTrading212Client
+from t212 import AsyncTrading212Client
 from t212.models import PositionResponse, CashResponse
 from market_wizard_api.models.portfolio.investments_summary import (
     InvestmentsSummaryResponse,

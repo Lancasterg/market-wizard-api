@@ -1460,13 +1460,13 @@ full = ["httpx (>=0.27.0,<0.29.0)", "itsdangerous", "jinja2", "python-multipart 
 
 [[package]]
 name = "trading-212-client"
-version = "0.1.2"
+version = "0.1.4"
 description = ""
 optional = false
 python-versions = "<4.0,>=3.11"
 files = [
-    {file = "trading_212_client-0.1.2-py3-none-any.whl", hash = "sha256:04330401c8d9845e8c6406d27f0b5468590f211f94f6675bf40176d26746fc2a"},
-    {file = "trading_212_client-0.1.2.tar.gz", hash = "sha256:7f883dbfb25a55df87d6ad9d9f5d9fafdcce2597eead84076574ce5aa7c5ebd7"},
+    {file = "trading_212_client-0.1.4-py3-none-any.whl", hash = "sha256:d7a35997db664fea746e1eb57e2bcaca920f607ec679da33ce13f9b63de1cbe0"},
+    {file = "trading_212_client-0.1.4.tar.gz", hash = "sha256:b6d579c4f8a2412602ce55cdf7c90b8edcf67c538b441cc0bd4d5e18ffe0393a"},
 ]
 
 [package.dependencies]
@@ -1773,4 +1773,4 @@ repair = ["scipy (>=1.6.3)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.12,<4.0"
-content-hash = "9dfeb55f6854f8b7eacc3c631ee8f0b5ed1efb2e118bb28ed8c5486e7784e270"
+content-hash = "a24904ef18fe64d8744cc2212189ab3cfd53f00b22d0954daaf024dcb91e9547"
