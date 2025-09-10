@@ -43,7 +43,7 @@ async def get_investments_summary() -> InvestmentsSummaryResponse:
     return InvestmentsSummaryResponse(root=items)
 
 
-@cached(ttl=60, cache=SimpleMemoryCache)
+@cached(ttl=300, cache=SimpleMemoryCache)
 async def get_portfolio_summary() -> PortfolioSummary:
     open_postitions_response: PositionResponse | Exception
     account_cash_response: CashResponse | Exception
@@ -56,7 +56,7 @@ async def get_portfolio_summary() -> PortfolioSummary:
     if isinstance(open_postitions_response, Exception) or isinstance(
         account_cash_response, Exception
     ):
-        return HTTPException(
+        raise HTTPException(
             status_code=502, detail="Error fetching data from Trading212 API"
         )
     else:
@@ -74,11 +74,26 @@ async def get_portfolio_summary() -> PortfolioSummary:
 
     return PortfolioSummary(
         total_return=total_return,
-        total_invested=total_invested,
-        current_invested_value=current_value,
+        total_invested=total_invested / 10,
+        current_invested_value=current_value / 10,
         profit_loss_percentage=profit_loss_percentage,
         number_of_investments=number_of_investments,
         free_cash=account_cash_response.free,
         invested_cash=account_cash_response.invested,
         total_portfolio_value=account_cash_response.total,
     )
+
+
+async def order_history_summary():
+    return await AsyncTrading212Client.historical_order_data(0, None, 20)
+
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    async def main():
+        resp = await order_history_summary()
+        print(resp)
+
+    asyncio.run(main())
