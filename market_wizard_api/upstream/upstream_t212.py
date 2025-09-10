@@ -7,6 +7,7 @@ from t212.async_client import AsyncTrading212Client
 from t212.models import PositionResponse, CashResponse
 from aiocache import cached, SimpleMemoryCache
 from market_wizard_api.models.portfolio.investments_summary import (
+    Investment,
     InvestmentsSummaryResponse,
 )
 from market_wizard_api.models.portfolio.portfolio_summary import PortfolioSummary
@@ -27,7 +28,7 @@ async def get_investments_summary() -> InvestmentsSummaryResponse:
         total_invested = item.averagePrice * item.quantity
         current_value = item.currentPrice * item.quantity
         profit_loss_percentage = current_value / total_invested
-        model = InvestmentsSummaryResponse(
+        model = Investment(
             ticker=item.ticker,
             quantity=item.quantity,
             average_price=item.averagePrice,
@@ -38,8 +39,8 @@ async def get_investments_summary() -> InvestmentsSummaryResponse:
             profit_loss_percentage=profit_loss_percentage - 1,
         )
         items.append(model)
-
-    return InvestmentsSummaryResponse.model_validate(items)
+    
+    return InvestmentsSummaryResponse(root=items)
 
 
 @cached(ttl=60, cache=SimpleMemoryCache)
