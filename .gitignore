@@ -1,5 +1,5 @@
 .envrc
-market_wizard_api/dev_tools
+dev_tools
 .idea
 
 __pycache__

@@ -3,16 +3,30 @@ from market_wizard_api import config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from t212.async_client import AsyncTrading212Client
+from market_wizard_api.mcp.mcp_server import mcp_app
 
 import uvicorn
 
 from market_wizard_api.routers import y_finance_router, portfolio_router
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    AsyncTrading212Client.init_client()
+
+    yield
+    AsyncTrading212Client.close_client()
+
+
+@asynccontextmanager
+async def combined_lifespan(app: FastAPI):
+    async with lifespan(app):
+        async with mcp_app.lifespan(app):
+            yield
+
+
 app = FastAPI(
-    title=config.APP_NAME,
-    description="Market wizard api",
-    version="0.0.1",
+    title=config.APP_NAME, description="Market wizard api", lifespan=combined_lifespan
 )
 
 
@@ -23,8 +37,11 @@ origins = [
     "http://127.0.0.1:8084",  # Your FastAPI backend URL (though not strictly needed for origins, good for testing)
 ]
 
+app.mount("/mcp", mcp_app)
+
 app.include_router(y_finance_router)
 app.include_router(portfolio_router)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -38,15 +55,6 @@ app.add_middleware(
 @app.get("/")
 async def read_root():
     return {"message": f"Welcome to {config.APP_NAME}"}
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-
-    AsyncTrading212Client.init_client()
-
-    yield
-    AsyncTrading212Client.close_client()
 
 
 if __name__ == "__main__":
