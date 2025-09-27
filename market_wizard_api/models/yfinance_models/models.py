@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Any, Optional
 from pydantic import BaseModel, RootModel, Field, ConfigDict
 from enum import StrEnum
+import pandas as pd
 
 
 class PeriodEnum(StrEnum):
@@ -863,7 +864,7 @@ class Thumbnail(BaseModel):
     originalWidth: int
     originalHeight: int
     caption: str
-    resolutions: List[Resolution]
+    resolutions: list[Resolution]
 
 
 class Provider(BaseModel):
