@@ -53,10 +53,7 @@ async def available_tickers() -> str:
         """
 
 
-@mcp.tool(
-    name="news",
-    description="Get news about a company"
-    )
+@mcp.tool(name="news", description="Get news about a company")
 async def news(ticker: str) -> str:
     data = await asyncio.to_thread(yf_client.yf_get_news, ticker)
     return data.llm_readable

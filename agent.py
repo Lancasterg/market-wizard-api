@@ -38,21 +38,17 @@ def setup_agent() -> Agent:
 
 
 def main():
-            # Tell me everything you know about the ticker "Hive".
-        # I want you to gather all the information you can about it
+    # Tell me everything you know about the ticker "Hive".
+    # I want you to gather all the information you can about it
     agent = setup_agent()
     result = agent.run_sync(
         # """
-        # Summarize all the news stories for the ticker BITF 
+        # Summarize all the news stories for the ticker BITF
         # Tell me if the sentiment towards BITF is positive or negative
-
         # Also look at the companies financials, price history and eps trend
-
         # I want to know if BITF is a good investment. I already own shares, but have lost a small amount of money on them. My entry point was $3.05
-        # I am trying to decide whether to keep them or sell them. 
-
+        # I am trying to decide whether to keep them or sell them.
         # """
-
         """ 
         Can you compare BITF with HIVE please.
 

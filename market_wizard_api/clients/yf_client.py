@@ -46,8 +46,10 @@ def yf_get_news(ticker: str) -> models.NewsResponse:
     data = yf.Ticker(ticker).get_news()
     response = models.NewsResponse.model_validate(data)
     for i, item in enumerate(response.root):
-        response.root[i].full_text = yf_get_full_news_stories(item.content.clickThroughUrl.url)
-    return response 
+        response.root[i].full_text = yf_get_full_news_stories(
+            item.content.clickThroughUrl.url
+        )
+    return response
 
 
 def yf_get_full_news_stories(url: str) -> str:
@@ -55,7 +57,6 @@ def yf_get_full_news_stories(url: str) -> str:
     article.download()
     article.parse()
     return article.text
-
 
 
 def yf_eps_trend(ticker: str) -> models.EPSTrend:

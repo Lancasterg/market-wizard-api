@@ -851,7 +851,6 @@ class AnalysPriceTargets(BaseModel):
         )
 
 
-
 class Resolution(BaseModel):
     url: str
     width: int
