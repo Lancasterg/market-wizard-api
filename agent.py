@@ -17,6 +17,7 @@ You have access to the following MCP endpoints:
 - available_tickers
 - eps_trend
 - price_targets
+- news
 
 You have access to financial data and need to use your initiative about which data you need to access
 in order to answer the questions asked to you.
@@ -37,11 +38,31 @@ def setup_agent() -> Agent:
 
 
 def main():
+            # Tell me everything you know about the ticker "Hive".
+        # I want you to gather all the information you can about it
     agent = setup_agent()
     result = agent.run_sync(
-        """
-        for the ticker RGTI, does the data you have access to align with the price targets given by analysts?
-        Look at recent prices, company financials and if there are any upcoming earnings
+        # """
+        # Summarize all the news stories for the ticker BITF 
+        # Tell me if the sentiment towards BITF is positive or negative
+
+        # Also look at the companies financials, price history and eps trend
+
+        # I want to know if BITF is a good investment. I already own shares, but have lost a small amount of money on them. My entry point was $3.05
+        # I am trying to decide whether to keep them or sell them. 
+
+        # """
+
+        """ 
+        Can you compare BITF with HIVE please.
+
+        Look at:
+            - news sentiment
+            - company financials
+            - price history
+            - eps trend
+            - analyst price targets
+
         """
     )
     print(result.output)

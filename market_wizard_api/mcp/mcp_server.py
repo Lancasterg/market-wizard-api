@@ -49,16 +49,17 @@ async def available_tickers() -> str:
         - KLAR
         - PLTR
         - HIVE
+        - BITF
         """
 
 
-# @mcp.tool(
-#     name="news",
-#     description="Get news about a company"
-#     )
-# async def news(ticker: str) -> str:
-#     data = await asyncio.to_thread(yf_client.yf_get_news, ticker)
-#     return data.llm_readable
+@mcp.tool(
+    name="news",
+    description="Get news about a company"
+    )
+async def news(ticker: str) -> str:
+    data = await asyncio.to_thread(yf_client.yf_get_news, ticker)
+    return data.llm_readable
 
 
 @mcp.tool(

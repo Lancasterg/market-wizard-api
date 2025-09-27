@@ -1,5 +1,5 @@
 from market_wizard_api.models.yfinance_models import models
-
+from newspaper import Article
 import yfinance as yf
 import numpy as np
 
@@ -42,8 +42,20 @@ def yf_get_available_tickers():
         """
 
 
-def yf_get_news(ticker: str):
-    return yf.Ticker(ticker).get_news()
+def yf_get_news(ticker: str) -> models.NewsResponse:
+    data = yf.Ticker(ticker).get_news()
+    response = models.NewsResponse.model_validate(data)
+    for i, item in enumerate(response.root):
+        response.root[i].full_text = yf_get_full_news_stories(item.content.clickThroughUrl.url)
+    return response 
+
+
+def yf_get_full_news_stories(url: str) -> str:
+    article = Article(url)
+    article.download()
+    article.parse()
+    return article.text
+
 
 
 def yf_eps_trend(ticker: str) -> models.EPSTrend:
@@ -54,3 +66,7 @@ def yf_eps_trend(ticker: str) -> models.EPSTrend:
 def yf_analyst_price_targets(ticker: str) -> models.AnalysPriceTargets:
     data = yf.Ticker(ticker).get_analyst_price_targets()
     return models.AnalysPriceTargets.model_validate(data)
+
+
+# def yf_something():
+#     yf.Ticker("NVDA").

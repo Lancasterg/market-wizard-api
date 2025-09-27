@@ -18,6 +18,7 @@ aiocache = "^0.12.3"
 pyarrow = "^21.0.0"
 fastmcp = {extras = ["uvicorn"], version = "<2.10.0, <2.13.0"}
 pydantic-ai = "^1.0.10"
+redis = "^6.4.0"
 
 [tool.poetry.group.analysis.dependencies]
 ta-lib = "^0.6.7"
@@ -28,6 +29,8 @@ praw = "^7.8.1"
 polars = "^1.33.1"
 seaborn = "^0.13.2"
 pyqt6 = "^6.9.1"
+newspaper3k = "^0.2.8"
+lxml = {extras = ["html-clean"], version = "^6.0.2"}
 
 
 [tool.poetry.group.dev.dependencies]

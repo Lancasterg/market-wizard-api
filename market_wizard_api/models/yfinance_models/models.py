@@ -78,12 +78,6 @@ class OHLCVData(RootModel[list[OHLCVRow]]):
         return response
 
 
-import pandas as pd
-from datetime import datetime
-from pydantic import BaseModel, RootModel, Field, ConfigDict
-from enum import StrEnum
-
-
 class BalanceSheetRow(BaseModel):
     date: datetime
     treasury_shares_number: float | None = Field(
@@ -854,3 +848,89 @@ class AnalysPriceTargets(BaseModel):
             f"Mean: {self.mean}\n"
             f"Median: {self.median}"
         )
+
+
+
+class Resolution(BaseModel):
+    url: str
+    width: int
+    height: int
+    tag: str
+
+
+class Thumbnail(BaseModel):
+    originalUrl: str
+    originalWidth: int
+    originalHeight: int
+    caption: str
+    resolutions: List[Resolution]
+
+
+class Provider(BaseModel):
+    displayName: str
+    url: str
+
+
+class UrlInfo(BaseModel):
+    url: str
+    site: str
+    region: str
+    lang: str
+
+
+class Metadata(BaseModel):
+    editorsPick: bool
+
+
+class PremiumFinance(BaseModel):
+    isPremiumNews: bool
+    isPremiumFreeNews: bool
+
+
+class Finance(BaseModel):
+    premiumFinance: PremiumFinance
+
+
+class Content(BaseModel):
+    id: str
+    contentType: str
+    title: str
+    description: str
+    summary: str
+    pubDate: str
+    displayTime: str
+    isHosted: bool
+    bypassModal: bool
+    previewUrl: Optional[str]
+    thumbnail: Thumbnail | None = Field(default=None)
+    provider: Provider
+    canonicalUrl: UrlInfo
+    clickThroughUrl: UrlInfo
+    metadata: Metadata
+    finance: Finance
+    storyline: Optional[str]
+
+
+class NewsItem(BaseModel):
+    id: str
+    content: Content
+    full_text: str | None = Field(default=None)
+
+
+class NewsResponse(RootModel[list[NewsItem]]):
+
+    @property
+    def llm_readable(self) -> str:
+        """Return a human-readable string summarizing the news list."""
+        lines = []
+        for i, item in enumerate(self.root, start=1):
+            c = item.content
+            lines.append(
+                f"{i}. {c.title}\n"
+                f"   Description: {c.description.strip() if c.description else 'N/A'}\n"
+                f"   Summary: {c.summary.strip() if c.summary else 'N/A'}\n"
+                f"   Date: {c.pubDate} | Source: {c.provider.displayName}\n"
+                f"   Content: {item.full_text}\n"
+                f"   URL: {c.clickThroughUrl.url}\n"
+            )
+        return "\n".join(lines)
